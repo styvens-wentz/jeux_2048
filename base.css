@@ -158,11 +158,7 @@ hr {
     background: rgba(238, 228, 218, 0.5);
     z-index: 100;
     text-align: center;
-    -webkit-animation: fade-in 800ms ease 1200ms;
-    -moz-animation: fade-in 800ms ease 1200ms;
     animation: fade-in 800ms ease 1200ms;
-    -webkit-animation-fill-mode: both;
-    -moz-animation-fill-mode: both;
     animation-fill-mode: both;
 }
 
@@ -228,8 +224,8 @@ hr {
 }
 
 .grid-cell {
-    width: 106.25px;
-    height: 106.25px;
+    width: 106px;
+    height: 106px;
     margin-right: 15px;
     float: left;
     border-radius: 3px;
@@ -615,23 +611,6 @@ hr {
         box-sizing: border-box;
     }
 
-    .game-container .game-message {
-        display: none;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: rgba(238, 228, 218, 0.5);
-        z-index: 100;
-        text-align: center;
-        -webkit-animation: fade-in 800ms ease 1200ms;
-        -moz-animation: fade-in 800ms ease 1200ms;
-        animation: fade-in 800ms ease 1200ms;
-        -webkit-animation-fill-mode: both;
-        -moz-animation-fill-mode: both;
-        animation-fill-mode: both;
-    }
 
     .game-container .game-message p {
         font-size: 60px;
@@ -695,8 +674,8 @@ hr {
     }
 
     .grid-cell {
-        width: 57.5px;
-        height: 57.5px;
+        width: 58px;
+        height: 58px;
         margin-right: 10px;
         float: left;
         border-radius: 3px;
