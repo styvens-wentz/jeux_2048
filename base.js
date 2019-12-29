@@ -42,26 +42,22 @@ GestionToucheClavier.prototype.listen = function ()
     const self = this;
 
     const map = {
-        38: 0, // Up
-        39: 1, // Right
-        40: 2, // Down
-        37: 3, // Left
-        75: 0, // Vim up
-        76: 1, // Vim right
-        74: 2, // Vim down
-        72: 3, // Vim left
-        87: 0, // W
-        68: 1, // D
-        83: 2, // S
-        65: 3  // A
+        ArrowUp: 0, // Up
+        ArrowRight: 1, // Right
+        ArrowDown: 2, // Down
+        ArrowLeft: 3, // Left
+        z: 0, // W
+        d: 1, // D
+        s: 2, // S
+        q: 3  // A
     };
 
     document.addEventListener("keydown", function (event)
     {
         const modifiers = event.altKey || event.ctrlKey || event.metaKey ||
             event.shiftKey;
-        const mapped = map[event.which];
-        console.log(event.key);
+        const mapped = map[event.key];
+
         if (!modifiers)
         {
             if (mapped !== undefined)
