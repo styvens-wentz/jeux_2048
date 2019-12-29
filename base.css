@@ -11,13 +11,13 @@ body {
     margin: 80px 0;
 }
 
-.heading:after {
+.ensembles-titre:after {
     content: "";
     display: block;
     clear: both;
 }
 
-h1.title {
+h1.titre {
     font-size: 80px;
     font-weight: bold;
     margin: 0;
@@ -36,12 +36,12 @@ h1.title {
     }
 }
 
-.scores-container {
+.ensembles-score {
     float: right;
     text-align: right;
 }
 
-.score-container, .best-container {
+.score-actuelle, .meilleur-score {
     position: relative;
     display: inline-block;
     background: #bbada0;
@@ -56,7 +56,7 @@ h1.title {
     text-align: center;
 }
 
-.score-container:after, .best-container:after {
+.score-actuelle:after, .meilleur-score:after {
     position: absolute;
     width: 100%;
     top: 10px;
@@ -68,7 +68,7 @@ h1.title {
     color: #eee4da;
 }
 
-.score-container .score-addition, .best-container .score-addition {
+.score-actuelle .score-addition, .meilleur-score .score-addition {
     position: absolute;
     right: 30px;
     color: red;
@@ -81,11 +81,11 @@ h1.title {
     animation-fill-mode: both;
 }
 
-.score-container:after {
+.score-actuelle:after {
     content: "Score";
 }
 
-.best-container:after {
+.meilleur-score:after {
     content: "Best";
 }
 
@@ -135,7 +135,7 @@ hr {
     }
 }
 
-.game-container {
+.ensemble-jeu {
     margin-top: 40px;
     position: relative;
     padding: 15px;
@@ -148,7 +148,7 @@ hr {
     box-sizing: border-box;
 }
 
-.game-container .game-message {
+.ensemble-jeu .message-jeu {
     display: none;
     position: absolute;
     top: 0;
@@ -162,7 +162,7 @@ hr {
     animation-fill-mode: both;
 }
 
-.game-container .game-message p {
+.ensemble-jeu .message-jeu p {
     font-size: 60px;
     font-weight: bold;
     height: 60px;
@@ -170,12 +170,12 @@ hr {
     margin-top: 222px;
 }
 
-.game-container .game-message .lower {
+.ensemble-jeu .message-jeu .sous-message {
     display: block;
     margin-top: 59px;
 }
 
-.game-container .game-message a {
+.ensemble-jeu .message-jeu a {
     display: inline-block;
     background: #8f7a66;
     border-radius: 3px;
@@ -187,43 +187,43 @@ hr {
     margin-left: 9px;
 }
 
-.game-container .game-message a.keep-playing-button {
+.ensemble-jeu .message-jeu a.continuer {
     display: none;
 }
 
-.game-container .game-message.game-won {
+.ensemble-jeu .message-jeu.game-won {
     background: rgba(237, 194, 46, 0.5);
     color: #f9f6f2;
 }
 
-.game-container .game-message.game-won a.keep-playing-button {
+.ensemble-jeu .message-jeu.game-won a.continuer {
     display: inline-block;
 }
 
-.game-container .game-message.game-won, .game-container .game-message.game-over {
+.ensemble-jeu .message-jeu.game-won, .ensemble-jeu .message-jeu.game-over {
     display: block;
 }
 
-.grid-container {
+.ensemble-grille {
     position: absolute;
     z-index: 1;
 }
 
-.grid-row {
+.ligne-grille {
     margin-bottom: 15px;
 }
 
-.grid-row:last-child {
+.ligne-grille:last-child {
     margin-bottom: 0;
 }
 
-.grid-row:after {
+.ligne-grille:after {
     content: "";
     display: block;
     clear: both;
 }
 
-.grid-cell {
+.cellule-grille {
     width: 106px;
     height: 106px;
     margin-right: 15px;
@@ -232,92 +232,92 @@ hr {
     background: #a6c5ff;
 }
 
-.grid-cell:last-child {
+.cellule-grille:last-child {
     margin-right: 0;
 }
 
-.tile-container {
+.ensemble-tuiles {
     position: absolute;
     z-index: 2;
 }
 
-.tile, .tile .tile-inner {
+.tuile, .tuile .tuile-inter {
     width: 107px;
     height: 107px;
     line-height: 107px;
 }
 
-.tile.tile-position-1-1 {
+.tuile.tuile-position-1-1 {
     transform: translate(0px, 0px);
 }
 
-.tile.tile-position-1-2 {
+.tuile.tuile-position-1-2 {
     transform: translate(0px, 121px);
 }
 
-.tile.tile-position-1-3 {
+.tuile.tuile-position-1-3 {
     transform: translate(0px, 242px);
 }
 
-.tile.tile-position-1-4 {
+.tuile.tuile-position-1-4 {
     transform: translate(0px, 363px);
 }
 
-.tile.tile-position-2-1 {
+.tuile.tuile-position-2-1 {
     transform: translate(121px, 0px);
 }
 
-.tile.tile-position-2-2 {
+.tuile.tuile-position-2-2 {
     transform: translate(121px, 121px);
 }
 
-.tile.tile-position-2-3 {
+.tuile.tuile-position-2-3 {
     transform: translate(121px, 242px);
 }
 
-.tile.tile-position-2-4 {
+.tuile.tuile-position-2-4 {
     transform: translate(121px, 363px);
 }
 
-.tile.tile-position-3-1 {
+.tuile.tuile-position-3-1 {
     transform: translate(242px, 0px);
 }
 
-.tile.tile-position-3-2 {
+.tuile.tuile-position-3-2 {
     transform: translate(242px, 121px);
 }
 
-.tile.tile-position-3-3 {
+.tuile.tuile-position-3-3 {
     transform: translate(242px, 242px);
 }
 
-.tile.tile-position-3-4 {
+.tuile.tuile-position-3-4 {
     transform: translate(242px, 363px);
 }
 
-.tile.tile-position-4-1 {
+.tuile.tuile-position-4-1 {
     transform: translate(363px, 0px);
 }
 
-.tile.tile-position-4-2 {
+.tuile.tuile-position-4-2 {
     transform: translate(363px, 121px);
 }
 
-.tile.tile-position-4-3 {
+.tuile.tuile-position-4-3 {
     transform: translate(363px, 242px);
 }
 
-.tile.tile-position-4-4 {
+.tuile.tuile-position-4-4 {
     transform: translate(363px, 363px);
 }
 
-.tile {
+.tuile {
     position: absolute;
     transition: 100ms ease-in-out;
     transition-property: transform;
 }
 
-.tile .tile-inner {
+.tuile .tuile-inter {
     border-radius: 3px;
     background: #eee4da;
     text-align: center;
@@ -326,37 +326,37 @@ hr {
     font-size: 55px;
 }
 
-.tile.tile-2 .tile-inner {
+.tuile.tuile-2 .tuile-inter {
     background: #eee4da;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), inset 0 0 0 1px rgba(255, 255, 255, 0);
 }
 
-.tile.tile-4 .tile-inner {
+.tuile.tuile-4 .tuile-inter {
     background: #cdc0a8;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), inset 0 0 0 1px rgba(255, 255, 255, 0);
 }
 
-.tile.tile-8 .tile-inner {
+.tuile.tuile-8 .tuile-inter {
     color: #f9f6f2;
     background: #f2b179;
 }
 
-.tile.tile-16 .tile-inner {
+.tuile.tuile-16 .tuile-inter {
     color: #f9f6f2;
     background: #dc7c63;
 }
 
-.tile.tile-32 .tile-inner {
+.tuile.tuile-32 .tuile-inter {
     color: #f9f6f2;
     background: #d36a5e;
 }
 
-.tile.tile-64 .tile-inner {
+.tuile.tuile-64 .tuile-inter {
     color: #f9f6f2;
     background: #d75a39;
 }
 
-.tile.tile-128 .tile-inner {
+.tuile.tuile-128 .tuile-inter {
     color: #f9f6f2;
     background: #edcf72;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.2381), inset 0 0 0 1px rgba(255, 255, 255, 0.14286);
@@ -364,12 +364,12 @@ hr {
 }
 
 @media screen and (max-width: 520px) {
-    .tile.tile-128 .tile-inner {
+    .tuile.tuile-128 .tuile-inter {
         font-size: 25px;
     }
 }
 
-.tile.tile-256 .tile-inner {
+.tuile.tuile-256 .tuile-inter {
     color: #f9f6f2;
     background: #edcc61;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.31746), inset 0 0 0 1px rgba(255, 255, 255, 0.19048);
@@ -377,12 +377,12 @@ hr {
 }
 
 @media screen and (max-width: 520px) {
-    .tile.tile-256 .tile-inner {
+    .tuile.tuile-256 .tuile-inter {
         font-size: 25px;
     }
 }
 
-.tile.tile-512 .tile-inner {
+.tuile.tuile-512 .tuile-inter {
     color: #f9f6f2;
     background: #edc850;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381);
@@ -390,12 +390,12 @@ hr {
 }
 
 @media screen and (max-width: 520px) {
-    .tile.tile-512 .tile-inner {
+    .tuile.tuile-512 .tuile-inter {
         font-size: 25px;
     }
 }
 
-.tile.tile-1024 .tile-inner {
+.tuile.tuile-1024 .tuile-inter {
     color: #f9f6f2;
     background: #edc53f;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571);
@@ -403,12 +403,12 @@ hr {
 }
 
 @media screen and (max-width: 520px) {
-    .tile.tile-1024 .tile-inner {
+    .tuile.tuile-1024 .tuile-inter {
         font-size: 15px;
     }
 }
 
-.tile.tile-2048 .tile-inner {
+.tuile.tuile-2048 .tuile-inter {
     color: #f9f6f2;
     background: #edc22e;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.55556), inset 0 0 0 1px rgba(255, 255, 255, 0.33333);
@@ -416,19 +416,19 @@ hr {
 }
 
 @media screen and (max-width: 520px) {
-    .tile.tile-2048 .tile-inner {
+    .tuile.tuile-2048 .tuile-inter {
         font-size: 15px;
     }
 }
 
-.tile.tile-super .tile-inner {
+.tuile.tuile-super .tuile-inter {
     color: #f9f6f2;
     background: #3c3a32;
     font-size: 30px;
 }
 
 @media screen and (max-width: 520px) {
-    .tile.tile-super .tile-inner {
+    .tuile.tuile-super .tuile-inter {
         font-size: 10px;
     }
 }
@@ -449,7 +449,7 @@ hr {
     }
 }
 
-.tile-new .tile-inner {
+.tuile-new .tuile-inter {
     animation: appear 200ms ease 100ms;
     animation-fill-mode: backwards;
 }
@@ -468,25 +468,25 @@ hr {
     }
 }
 
-.tile-merged .tile-inner {
+.tuile-fusion .tuile-inter {
     z-index: 20;
     animation: pop 200ms ease 100ms;
     animation-fill-mode: backwards;
 }
 
-.above-game:after {
+.avant-jeu:after {
     content: "";
     display: block;
     clear: both;
 }
 
-.game-intro {
+.intro {
     float: left;
     line-height: 42px;
     margin-bottom: 0;
 }
 
-.restart-button {
+.nouvelle-partie {
     background: #8f7a66;
     border-radius: 3px;
     padding: 0 20px;
@@ -513,7 +513,7 @@ hr {
         padding: 0 20px;
     }
 
-    h1.title {
+    h1.titre {
         font-size: 27px;
         margin-top: 15px;
     }
@@ -523,24 +523,24 @@ hr {
         margin: 0 auto;
     }
 
-    .score-container, .best-container {
+    .score-actuelle, .meilleur-score {
         margin-top: 0;
         padding: 15px 10px;
         min-width: 40px;
     }
 
-    .heading {
+    .ensembles-titre {
         margin-bottom: 10px;
     }
 
-    .game-intro {
+    .intro {
         width: 55%;
         display: block;
         box-sizing: border-box;
         line-height: 1.65;
     }
 
-    .restart-button {
+    .nouvelle-partie {
         width: 42%;
         padding: 0;
         display: block;
@@ -548,7 +548,7 @@ hr {
         margin-top: 2px;
     }
 
-    .game-container {
+    .ensemble-jeu {
         margin-top: 17px;
         position: relative;
         padding: 10px;
@@ -562,7 +562,7 @@ hr {
     }
 
 
-    .game-container .game-message p {
+    .ensemble-jeu .message-jeu p {
         font-size: 60px;
         font-weight: bold;
         height: 60px;
@@ -570,12 +570,12 @@ hr {
         margin-top: 222px;
     }
 
-    .game-container .game-message .lower {
+    .ensemble-jeu .message-jeu .sous-message {
         display: block;
         margin-top: 59px;
     }
 
-    .game-container .game-message a {
+    .ensemble-jeu .message-jeu a {
         display: inline-block;
         background: #8f7a66;
         border-radius: 3px;
@@ -587,43 +587,43 @@ hr {
         margin-left: 9px;
     }
 
-    .game-container .game-message a.keep-playing-button {
+    .ensemble-jeu .message-jeu a.continuer {
         display: none;
     }
 
-    .game-container .game-message.game-won {
+    .ensemble-jeu .message-jeu.game-won {
         background: rgba(237, 194, 46, 0.5);
         color: #f9f6f2;
     }
 
-    .game-container .game-message.game-won a.keep-playing-button {
+    .ensemble-jeu .message-jeu.game-won a.continuer {
         display: inline-block;
     }
 
-    .game-container .game-message.game-won, .game-container .game-message.game-over {
+    .ensemble-jeu .message-jeu.game-won, .ensemble-jeu .message-jeu.game-over {
         display: block;
     }
 
-    .grid-container {
+    .ensemble-grille {
         position: absolute;
         z-index: 1;
     }
 
-    .grid-row {
+    .ligne-grille {
         margin-bottom: 10px;
     }
 
-    .grid-row:last-child {
+    .ligne-grille:last-child {
         margin-bottom: 0;
     }
 
-    .grid-row:after {
+    .ligne-grille:after {
         content: "";
         display: block;
         clear: both;
     }
 
-    .grid-cell {
+    .cellule-grille {
         width: 58px;
         height: 58px;
         margin-right: 10px;
@@ -632,97 +632,97 @@ hr {
         background: rgba(238, 228, 218, 0.35);
     }
 
-    .grid-cell:last-child {
+    .cellule-grille:last-child {
         margin-right: 0;
     }
 
-    .tile-container {
+    .ensemble-tuiles {
         position: absolute;
         z-index: 2;
     }
 
-    .tile, .tile .tile-inner {
+    .tuile, .tuile .tuile-inter {
         width: 58px;
         height: 58px;
         line-height: 58px;
     }
 
-    .tile.tile-position-1-1 {
+    .tuile.tuile-position-1-1 {
         transform: translate(0px, 0px);
     }
 
-    .tile.tile-position-1-2 {
+    .tuile.tuile-position-1-2 {
         transform: translate(0px, 67px);
     }
 
-    .tile.tile-position-1-3 {
+    .tuile.tuile-position-1-3 {
         transform: translate(0px, 135px);
     }
 
-    .tile.tile-position-1-4 {
+    .tuile.tuile-position-1-4 {
         transform: translate(0px, 202px);
     }
 
-    .tile.tile-position-2-1 {
+    .tuile.tuile-position-2-1 {
         transform: translate(67px, 0px);
     }
 
-    .tile.tile-position-2-2 {
+    .tuile.tuile-position-2-2 {
         transform: translate(67px, 67px);
     }
 
-    .tile.tile-position-2-3 {
+    .tuile.tuile-position-2-3 {
         transform: translate(67px, 135px);
     }
 
-    .tile.tile-position-2-4 {
+    .tuile.tuile-position-2-4 {
         transform: translate(67px, 202px);
     }
 
-    .tile.tile-position-3-1 {
+    .tuile.tuile-position-3-1 {
         transform: translate(135px, 0px);
     }
 
-    .tile.tile-position-3-2 {
+    .tuile.tuile-position-3-2 {
         transform: translate(135px, 67px);
     }
 
-    .tile.tile-position-3-3 {
+    .tuile.tuile-position-3-3 {
         transform: translate(135px, 135px);
     }
 
-    .tile.tile-position-3-4 {
+    .tuile.tuile-position-3-4 {
         transform: translate(135px, 202px);
     }
 
-    .tile.tile-position-4-1 {
+    .tuile.tuile-position-4-1 {
         transform: translate(202px, 0px);
     }
 
-    .tile.tile-position-4-2 {
+    .tuile.tuile-position-4-2 {
         transform: translate(202px, 67px);
     }
 
-    .tile.tile-position-4-3 {
+    .tuile.tuile-position-4-3 {
         transform: translate(202px, 135px);
     }
 
-    .tile.tile-position-4-4 {
+    .tuile.tuile-position-4-4 {
         transform: translate(202px, 202px);
     }
 
-    .tile .tile-inner {
+    .tuile .tuile-inter {
         font-size: 35px;
     }
 
-    .game-message p {
+    .message-jeu p {
         font-size: 30px !important;
         height: 30px !important;
         line-height: 30px !important;
         margin-top: 90px !important;
     }
 
-    .game-message .lower {
+    .message-jeu .sous-message {
         margin-top: 30px !important;
     }
 }
