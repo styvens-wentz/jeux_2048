@@ -68,18 +68,18 @@ GestionToucheClavier.prototype.listen = function ()
         }
 
         if (!modifiers && event.which === 82)
-            self.restart.call(self, event);
+            self.rejouer.call(self, event);
 
     });
 
-    this.bindButtonPress(".reessayer", this.restart);
-    this.bindButtonPress(".nouvelle-partie", this.restart);
-    this.bindButtonPress(".continuer", this.keepPlaying);
+    this.bindButtonPress(".reessayer", this.rejouer);
+    this.bindButtonPress(".nouvelle-partie", this.rejouer);
+    this.bindButtonPress(".continuer", this.continuer);
 
     let touchStartClientX, touchStartClientY;
-    const gameContainer = document.getElementsByClassName("ensemble-jeu")[0];
+    const ensembleJeu = document.getElementsByClassName("ensemble-jeu")[0];
 
-    gameContainer.addEventListener(this.eventTouchstart, function (event)
+    ensembleJeu.addEventListener(this.eventTouchstart, function (event)
     {
         if ((!window.navigator.msPoinnerEnabled && event.touches.length > 1) ||
             event.targetTouches > 1)
@@ -99,12 +99,12 @@ GestionToucheClavier.prototype.listen = function ()
         event.preventDefault();
     });
 
-    gameContainer.addEventListener(this.eventTouchmove, function (event)
+    ensembleJeu.addEventListener(this.eventTouchmove, function (event)
     {
         event.preventDefault();
     });
 
-    gameContainer.addEventListener(this.eventTouchend, function (event)
+    ensembleJeu.addEventListener(this.eventTouchend, function (event)
     {
         if ((!window.navigator.msPoinnerEnabled && event.touches.length > 0) ||
             event.targetTouches > 0)
@@ -134,20 +134,19 @@ GestionToucheClavier.prototype.listen = function ()
         {
             self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
         }
-
     });
 };
 
-GestionToucheClavier.prototype.restart = function (event)
+GestionToucheClavier.prototype.rejouer = function (event)
 {
     event.preventDefault();
-    this.emit("restart");
+    this.emit("rejouer");
 };
 
-GestionToucheClavier.prototype.keepPlaying = function (event)
+GestionToucheClavier.prototype.continuer = function (event)
 {
     event.preventDefault();
-    this.emit("keepPlaying");
+    this.emit("continuer");
 };
 
 GestionToucheClavier.prototype.bindButtonPress = function (selector, fn)
@@ -159,52 +158,52 @@ GestionToucheClavier.prototype.bindButtonPress = function (selector, fn)
 
 
 
-function HTMLActuator() {
+function HTMLActionneur() {
     this.tuileEnsemble    = document.querySelector(".ensemble-tuiles");
-    this.scoreContainer   = document.querySelector(".score-actuelle");
-    this.bestContainer    = document.querySelector(".meilleur-score");
-    this.messageContainer = document.querySelector(".message-jeu");
+    this.scoreActuelle   = document.querySelector(".score-actuelle");
+    this.scoreMeilleur    = document.querySelector(".meilleur-score");
+    this.messageJeu = document.querySelector(".message-jeu");
 
     this.score = 0;
 }
 
-HTMLActuator.prototype.actuate = function (grid, metadata)
+HTMLActionneur.prototype.actuate = function (grille, metadata)
 {
     const self = this;
 
     window.requestAnimationFrame(function ()
     {
-        self.clearContainer(self.tuileEnsemble);
+        self.rafraichirEnsemble(self.tuileEnsemble);
 
-        grid.cells.forEach(function (column)
+        grille.cells.forEach(function (column)
         {
             column.forEach(function (cell)
             {
                 if (cell)
-                    self.addTile(cell);
+                    self.ajoutTuile(cell);
             });
         });
 
-        self.updateScore(metadata.score);
-        self.updateBestScore(metadata.bestScore);
+        self.majScore(metadata.score);
+        self.majMeilleurScore(metadata.meilleurScore);
 
-        if (metadata.terminated)
+        if (metadata.terminer)
         {
-            if (metadata.over)
+            if (metadata.perdu)
                 self.message(false);
-            else if (metadata.won)
+            else if (metadata.gagner)
                 self.message(true);
         }
 
     });
 };
 
-HTMLActuator.prototype.continueGame = function ()
+HTMLActionneur.prototype.continuerJeu = function ()
 {
-    this.clearMessage();
+    this.rafraichirMessage();
 };
 
-HTMLActuator.prototype.clearContainer = function (container)
+HTMLActionneur.prototype.rafraichirEnsemble = function (container)
 {
     while (container.firstChild)
     {
@@ -212,7 +211,7 @@ HTMLActuator.prototype.clearContainer = function (container)
     }
 };
 
-HTMLActuator.prototype.addTile = function (tuile)
+HTMLActionneur.prototype.ajoutTuile = function (tuile)
 {
     const self = this;
 
@@ -245,7 +244,7 @@ HTMLActuator.prototype.addTile = function (tuile)
 
         tuile.fusionFrom.forEach(function (fusion)
         {
-            self.addTile(fusion);
+            self.ajoutTuile(fusion);
         });
     }
     else
@@ -259,30 +258,30 @@ HTMLActuator.prototype.addTile = function (tuile)
     this.tuileEnsemble.appendChild(wrapper);
 };
 
-HTMLActuator.prototype.applyClasses = function (element, classes)
+HTMLActionneur.prototype.applyClasses = function (element, classes)
 {
     element.setAttribute("class", classes.join(" "));
 };
 
-HTMLActuator.prototype.normalizePosition = function (position)
+HTMLActionneur.prototype.normalizePosition = function (position)
 {
     return { x: position.x + 1, y: position.y + 1 };
 };
 
-HTMLActuator.prototype.positionClass = function (position)
+HTMLActionneur.prototype.positionClass = function (position)
 {
     position = this.normalizePosition(position);
     return "tuile-position-" + position.x + "-" + position.y;
 };
 
-HTMLActuator.prototype.updateScore = function (score)
+HTMLActionneur.prototype.majScore = function (score)
 {
-    this.clearContainer(this.scoreContainer);
+    this.rafraichirEnsemble(this.scoreActuelle);
 
     const difference = score - this.score;
     this.score = score;
 
-    this.scoreContainer.textContent = this.score;
+    this.scoreActuelle.textContent = this.score;
 
     if (difference > 0)
     {
@@ -290,38 +289,38 @@ HTMLActuator.prototype.updateScore = function (score)
         addition.classList.add("score-addition");
         addition.textContent = "+" + difference;
 
-        this.scoreContainer.appendChild(addition);
+        this.scoreActuelle.appendChild(addition);
     }
 };
 
-HTMLActuator.prototype.updateBestScore = function (bestScore)
+HTMLActionneur.prototype.majMeilleurScore = function (meilleurScore)
 {
-    this.bestContainer.textContent = bestScore;
+    this.scoreMeilleur.textContent = meilleurScore;
 };
 
-HTMLActuator.prototype.message = function (won)
+HTMLActionneur.prototype.message = function (gagner)
 {
-    const type = won ? "game-won" : "game-over";
+    const type = gagner ? "partie-gagner" : "partie-perdu";
 
-    const message = won ? "Vous avez gagné !" : "Game over!";
+    const message = gagner ? "Vous avez gagné !" : "Vous avez perdu !";
 
-    this.messageContainer.classList.add(type);
-    this.messageContainer.getElementsByTagName("p")[0].textContent = message;
+    this.messageJeu.classList.add(type);
+    this.messageJeu.getElementsByTagName("p")[0].textContent = message;
 };
 
-HTMLActuator.prototype.clearMessage = function ()
+HTMLActionneur.prototype.rafraichirMessage = function ()
 {
-    this.messageContainer.classList.remove("game-won");
-    this.messageContainer.classList.remove("game-over");
+    this.messageJeu.classList.remove("partie-gagner");
+    this.messageJeu.classList.remove("partie-perdu");
 };
 
-function Grid(size, previousState)
+function Grille(size, previousState)
 {
     this.size = size;
     this.cells = previousState ? this.fromState(previousState) : this.empty();
 }
 
-Grid.prototype.empty = function ()
+Grille.prototype.empty = function ()
 {
     const cells = [];
 
@@ -338,7 +337,7 @@ Grid.prototype.empty = function ()
     return cells;
 };
 
-Grid.prototype.fromState = function (state)
+Grille.prototype.fromState = function (state)
 {
     const cells = [];
 
@@ -356,7 +355,7 @@ Grid.prototype.fromState = function (state)
     return cells;
 };
 
-Grid.prototype.randomAvailableCell = function ()
+Grille.prototype.randomAvailableCell = function ()
 {
     const cells = this.availableCells();
 
@@ -364,7 +363,7 @@ Grid.prototype.randomAvailableCell = function ()
         return cells[Math.floor(Math.random() * cells.length)];
 };
 
-Grid.prototype.availableCells = function ()
+Grille.prototype.availableCells = function ()
 {
     const cells = [];
 
@@ -375,7 +374,7 @@ Grid.prototype.availableCells = function ()
     return cells;
 };
 
-Grid.prototype.eachCell = function (callback)
+Grille.prototype.eachCell = function (callback)
 {
     for (let x = 0; x < this.size; x++)
     {
@@ -386,21 +385,21 @@ Grid.prototype.eachCell = function (callback)
     }
 };
 
-Grid.prototype.cellsAvailable = function ()
+Grille.prototype.cellsAvailable = function ()
 {
     return !!this.availableCells().length;
 };
 
-Grid.prototype.cellAvailable = function (cell) {
+Grille.prototype.cellAvailable = function (cell) {
     return !this.cellOccupied(cell);
 };
 
-Grid.prototype.cellOccupied = function (cell)
+Grille.prototype.cellOccupied = function (cell)
 {
     return !!this.cellContent(cell);
 };
 
-Grid.prototype.cellContent = function (cell)
+Grille.prototype.cellContent = function (cell)
 {
     if (this.withinBounds(cell))
         return this.cells[cell.x][cell.y];
@@ -408,23 +407,23 @@ Grid.prototype.cellContent = function (cell)
         return null;
 };
 
-Grid.prototype.insertTile = function (tuile)
+Grille.prototype.insertTile = function (tuile)
 {
     this.cells[tuile.x][tuile.y] = tuile;
 };
 
-Grid.prototype.removeTile = function (tuile)
+Grille.prototype.removeTile = function (tuile)
 {
     this.cells[tuile.x][tuile.y] = null;
 };
 
-Grid.prototype.withinBounds = function (position)
+Grille.prototype.withinBounds = function (position)
 {
     return position.x >= 0 && position.x < this.size &&
         position.y >= 0 && position.y < this.size;
 };
 
-Grid.prototype.serialize = function ()
+Grille.prototype.serialize = function ()
 {
     const cellState = [];
 
@@ -482,7 +481,7 @@ window.fakeStorage = {
 };
 
 function LocalStorageManager() {
-    this.bestScoreKey     = "bestScore";
+    this.meilleurScoreKey     = "meilleurScore";
     this.gameStateKey     = "gameState";
 
     const supported = this.localStorageSupported();
@@ -503,11 +502,11 @@ LocalStorageManager.prototype.localStorageSupported = function () {
 };
 
 LocalStorageManager.prototype.getBestScore = function () {
-    return this.storage.getItem(this.bestScoreKey) || 0;
+    return this.storage.getItem(this.meilleurScoreKey) || 0;
 };
 
 LocalStorageManager.prototype.setBestScore = function (score) {
-    this.storage.setItem(this.bestScoreKey, score);
+    this.storage.setItem(this.meilleurScoreKey, score);
 };
 
 LocalStorageManager.prototype.getGameState = function () {
@@ -533,27 +532,27 @@ function GameManager(size, InputManager, Actuator, StorageManager)
     this.startTiles     = 2;
 
     this.inputManager.on("move", this.move.bind(this));
-    this.inputManager.on("restart", this.restart.bind(this));
-    this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+    this.inputManager.on("rejouer", this.rejouer.bind(this));
+    this.inputManager.on("continuer", this.continuer.bind(this));
 
     this.setup();
 }
 
-GameManager.prototype.restart = function () {
+GameManager.prototype.rejouer = function () {
     this.storageManager.clearGameState();
-    this.actuator.continueGame();
+    this.actuator.continuerJeu();
     this.setup();
 };
 
-GameManager.prototype.keepPlaying = function ()
+GameManager.prototype.continuer = function ()
 {
-    this.keepPlaying = true;
-    this.actuator.continueGame();
+    this.continuer = true;
+    this.actuator.continuerJeu();
 };
 
 GameManager.prototype.isGameTerminated = function ()
 {
-    return this.over || (this.won && !this.keepPlaying);
+    return this.perdu || (this.gagner && !this.continuer);
 };
 
 GameManager.prototype.setup = function ()
@@ -562,19 +561,19 @@ GameManager.prototype.setup = function ()
 
     if (previousState)
     {
-        this.grid        = new Grid(previousState.grid.size, previousState.grid.cells);
+        this.grid        = new Grille(previousState.grid.size, previousState.grid.cells);
         this.score       = previousState.score;
-        this.over        = previousState.over;
-        this.won         = previousState.won;
-        this.keepPlaying = previousState.keepPlaying;
+        this.perdu        = previousState.perdu;
+        this.gagner         = previousState.gagner;
+        this.continuer = previousState.continuer;
     }
     else
     {
-        this.grid        = new Grid(this.size);
+        this.grid        = new Grille(this.size);
         this.score       = 0;
-        this.over        = false;
-        this.won         = false;
-        this.keepPlaying = false;
+        this.perdu        = false;
+        this.gagner         = false;
+        this.continuer = false;
 
         this.addStartTiles();
     }
@@ -606,7 +605,7 @@ GameManager.prototype.actuate = function ()
     if (this.storageManager.getBestScore() < this.score)
         this.storageManager.setBestScore(this.score);
 
-    if (this.over)
+    if (this.perdu)
         this.storageManager.clearGameState();
     else
         this.storageManager.setGameState(this.serialize());
@@ -614,10 +613,10 @@ GameManager.prototype.actuate = function ()
     this.actuator.actuate(this.grid,
         {
             score:      this.score,
-            over:       this.over,
-            won:        this.won,
-            bestScore:  this.storageManager.getBestScore(),
-            terminated: this.isGameTerminated()
+            perdu:       this.perdu,
+            gagner:        this.gagner,
+            meilleurScore:  this.storageManager.getBestScore(),
+            terminer: this.isGameTerminated()
         });
 };
 
@@ -626,9 +625,9 @@ GameManager.prototype.serialize = function ()
     return {
         grid:        this.grid.serialize(),
         score:       this.score,
-        over:        this.over,
-        won:         this.won,
-        keepPlaying: this.keepPlaying
+        perdu:        this.perdu,
+        gagner:         this.gagner,
+        continuer: this.continuer
     };
 };
 
@@ -688,7 +687,7 @@ GameManager.prototype.move = function (direction)
                     tuile.updatePosition(positions.next);
                     self.score += fusion.value;
 
-                    if (fusion.value === 2048) self.won = true;
+                    if (fusion.value === 2048) self.gagner = true;
                 }
                 else
                     self.moveTile(tuile, positions.farthest);
@@ -705,7 +704,7 @@ GameManager.prototype.move = function (direction)
         this.addRandomTile();
 
         if (!this.movesAvailable())
-            this.over = true;
+            this.perdu = true;
 
         this.actuate();
     }
