@@ -1,3 +1,37 @@
+$('.continuer, .nouvelle-partie').click(function () {
+    const ensemble_jeu = $('.ensemble-jeu');
+    const height = ensemble_jeu.css('width');
+
+    ensemble_jeu.css({
+        height: height,
+        background: 'rgba(0, 0, 33, 0.76)'
+    });
+    $('.reessayer').css('display', 'initial');
+    $('.message-jeu p').css('display', 'initial');
+    $('.continuer').css({
+        display: 'none',
+        position: 'initial',
+        left: 'initial'
+    });
+    $('.nouvelle-partie').css({
+        position: 'initial',
+        top: 'initial',
+        left: 'initial',
+    });
+    $('.ensemble-grille').css('display', 'initial');
+    $('.ensemble-tuiles').css('display', 'initial');
+    $('.ensemble-jeu .message-jeu').css({
+        animation: 'fade-in 400ms ease 800ms',
+        display: 'none'
+    });
+    $('.explication-jeu').css('display', 'none');
+});
+
+
+
+
+
+
 function GestionToucheClavier()
 {
     this.events = {};
@@ -26,7 +60,7 @@ GestionToucheClavier.prototype.on = function (event, callback)
     this.events[event].push(callback);
 };
 
-GestionToucheClavier.prototype.emit = function (event, data)
+GestionToucheClavier.prototype.emettre = function (event, data)
 {
     const callbacks = this.events[event];
     if (callbacks)
@@ -42,14 +76,14 @@ GestionToucheClavier.prototype.listen = function ()
     const self = this;
 
     const map = {
-        ArrowUp: 0, // Up
-        ArrowRight: 1, // Right
-        ArrowDown: 2, // Down
-        ArrowLeft: 3, // Left
-        z: 0, // W
-        d: 1, // D
-        s: 2, // S
-        q: 3  // A
+        ArrowUp: 0,
+        ArrowRight: 1,
+        ArrowDown: 2,
+        ArrowLeft: 3,
+        z: 0,
+        d: 1,
+        s: 2,
+        q: 3,
     };
 
     document.addEventListener("keydown", function (event)
@@ -63,13 +97,12 @@ GestionToucheClavier.prototype.listen = function ()
             if (mapped !== undefined)
             {
                 event.preventDefault();
-                self.emit("move", mapped);
+                self.emettre("move", mapped);
             }
         }
 
-        if (!modifiers && event.which === 82)
+        if (!modifiers && event.key === 'r')
             self.rejouer.call(self, event);
-
     });
 
     this.bindButtonPress(".reessayer", this.rejouer);
@@ -81,11 +114,11 @@ GestionToucheClavier.prototype.listen = function ()
 
     ensembleJeu.addEventListener(this.eventTouchstart, function (event)
     {
-        if ((!window.navigator.msPoinnerEnabled && event.touches.length > 1) ||
+        if ((!window.navigator.msPointerEnabled && event.touches.length > 1) ||
             event.targetTouches > 1)
             return;
 
-        if (window.navigator.msPoinnerEnabled)
+        if (window.navigator.msPointerEnabled)
         {
             touchStartClientX = event.pageX;
             touchStartClientY = event.pageY;
@@ -106,33 +139,33 @@ GestionToucheClavier.prototype.listen = function ()
 
     ensembleJeu.addEventListener(this.eventTouchend, function (event)
     {
-        if ((!window.navigator.msPoinnerEnabled && event.touches.length > 0) ||
+        if ((!window.navigator.msPointerEnabled && event.touches.length > 0) ||
             event.targetTouches > 0)
             return;
 
 
-        let touchEndClientX, touchEndClientY;
+        let toucheClientX, toucheClientY;
 
-        if (window.navigator.msPoinnerEnabled)
+        if (window.navigator.msPointerEnabled)
         {
-            touchEndClientX = event.pageX;
-            touchEndClientY = event.pageY;
+            toucheClientX = event.pageX;
+            toucheClientY = event.pageY;
         }
         else
         {
-            touchEndClientX = event.changedTouches[0].clientX;
-            touchEndClientY = event.changedTouches[0].clientY;
+            toucheClientX = event.changedTouches[0].clientX;
+            toucheClientY = event.changedTouches[0].clientY;
         }
 
-        const dx = touchEndClientX - touchStartClientX;
-        const absDx = Math.abs(dx);
+        const directionX = toucheClientX - touchStartClientX;
+        const absDx = Math.abs(directionX);
 
-        const dy = touchEndClientY - touchStartClientY;
-        const absDy = Math.abs(dy);
+        const directionY = toucheClientY - touchStartClientY;
+        const absDy = Math.abs(directionY);
 
         if (Math.max(absDx, absDy) > 10)
         {
-            self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
+            self.emettre("move", absDx > absDy ? (directionX > 0 ? 1 : 3) : (directionY > 0 ? 2 : 0));
         }
     });
 };
@@ -140,13 +173,13 @@ GestionToucheClavier.prototype.listen = function ()
 GestionToucheClavier.prototype.rejouer = function (event)
 {
     event.preventDefault();
-    this.emit("rejouer");
+    this.emettre("rejouer");
 };
 
 GestionToucheClavier.prototype.continuer = function (event)
 {
     event.preventDefault();
-    this.emit("continuer");
+    this.emettre("continuer");
 };
 
 GestionToucheClavier.prototype.bindButtonPress = function (selector, fn)
@@ -163,24 +196,24 @@ function HTMLActionneur() {
     this.scoreActuelle   = document.querySelector(".score-actuelle");
     this.scoreMeilleur    = document.querySelector(".meilleur-score");
     this.messageJeu = document.querySelector(".message-jeu");
-
     this.score = 0;
 }
 
-HTMLActionneur.prototype.actuate = function (grille, metadata)
+HTMLActionneur.prototype.actionner = function (grille, metadata)
 {
     const self = this;
 
     window.requestAnimationFrame(function ()
     {
+
         self.rafraichirEnsemble(self.tuileEnsemble);
 
-        grille.cells.forEach(function (column)
+        grille.cellules.forEach(function (column)
         {
-            column.forEach(function (cell)
+            column.forEach(function (cellule)
             {
-                if (cell)
-                    self.ajoutTuile(cell);
+                if (cellule)
+                    self.ajoutTuile(cellule);
             });
         });
 
@@ -215,32 +248,32 @@ HTMLActionneur.prototype.ajoutTuile = function (tuile)
 {
     const self = this;
 
-    const wrapper = document.createElement("div");
+    const toutTuile = document.createElement("div");
     const inter = document.createElement("div");
-    const position = tuile.previousPosition || {x: tuile.x, y: tuile.y};
+    const position = tuile.precedentePosition || {x: tuile.x, y: tuile.y};
     const positionClass = this.positionClass(position);
 
     const classes = ["tuile", "tuile-" + tuile.value, positionClass];
 
     if (tuile.value > 2048) classes.push("tuile-super");
 
-    this.applyClasses(wrapper, classes);
+    this.applicationClasses(toutTuile, classes);
 
     inter.classList.add("tuile-inter");
     inter.textContent = tuile.value;
 
-    if (tuile.previousPosition)
+    if (tuile.precedentePosition)
     {
         window.requestAnimationFrame(function ()
         {
             classes[2] = self.positionClass({ x: tuile.x, y: tuile.y });
-            self.applyClasses(wrapper, classes); // Update the position
+            self.applicationClasses(toutTuile, classes);
         });
     }
     else if (tuile.fusionFrom)
     {
         classes.push("tuile-fusion");
-        this.applyClasses(wrapper, classes);
+        this.applicationClasses(toutTuile, classes);
 
         tuile.fusionFrom.forEach(function (fusion)
         {
@@ -249,28 +282,28 @@ HTMLActionneur.prototype.ajoutTuile = function (tuile)
     }
     else
     {
-        classes.push("tuile-new");
-        this.applyClasses(wrapper, classes);
+        classes.push("tuile-nouveau");
+        this.applicationClasses(toutTuile, classes);
     }
 
-    wrapper.appendChild(inter);
+    toutTuile.appendChild(inter);
 
-    this.tuileEnsemble.appendChild(wrapper);
+    this.tuileEnsemble.appendChild(toutTuile);
 };
 
-HTMLActionneur.prototype.applyClasses = function (element, classes)
+HTMLActionneur.prototype.applicationClasses = function (element, classes)
 {
     element.setAttribute("class", classes.join(" "));
 };
 
-HTMLActionneur.prototype.normalizePosition = function (position)
+HTMLActionneur.prototype.normalePosition = function (position)
 {
     return { x: position.x + 1, y: position.y + 1 };
 };
 
 HTMLActionneur.prototype.positionClass = function (position)
 {
-    position = this.normalizePosition(position);
+    position = this.normalePosition(position);
     return "tuile-position-" + position.x + "-" + position.y;
 };
 
@@ -298,11 +331,11 @@ HTMLActionneur.prototype.majMeilleurScore = function (meilleurScore)
     this.scoreMeilleur.textContent = meilleurScore;
 };
 
-HTMLActionneur.prototype.message = function (gagner)
+HTMLActionneur.prototype.message = function (fini)
 {
-    const type = gagner ? "partie-gagner" : "partie-perdu";
+    const type = fini ? "partie-gagner" : "partie-perdu";
 
-    const message = gagner ? "Vous avez gagné !" : "Vous avez perdu !";
+    const message = fini ? "Vous avez gagné !" : "Vous avez perdu !";
 
     this.messageJeu.classList.add(type);
     this.messageJeu.getElementsByTagName("p")[0].textContent = message;
@@ -314,158 +347,163 @@ HTMLActionneur.prototype.rafraichirMessage = function ()
     this.messageJeu.classList.remove("partie-perdu");
 };
 
-function Grille(size, previousState)
+function Grille(taille, precedent)
 {
-    this.size = size;
-    this.cells = previousState ? this.fromState(previousState) : this.empty();
+    this.taille = taille;
+    this.cellules = precedent ? this.fromState(precedent) : this.empty();
 }
 
 Grille.prototype.empty = function ()
 {
-    const cells = [];
+    const cellules = [];
 
-    for (let x = 0; x < this.size; x++)
+    for (let x = 0; x < this.taille; x++)
     {
-        const row = cells[x] = [];
+        cellules[x] = [];
+        const rangee = cellules[x];
 
-        for (let y = 0; y < this.size; y++)
+
+        for (let y = 0; y < this.taille; y++)
         {
-            row.push(null);
+            rangee.push(null);
         }
     }
 
-    return cells;
+    return cellules;
 };
 
-Grille.prototype.fromState = function (state)
+Grille.prototype.fromState = function (etat)
 {
-    const cells = [];
+    const cellules = [];
 
-    for (let x = 0; x < this.size; x++)
+    for (let x = 0; x < this.taille; x++)
     {
-        const row = cells[x] = [];
+        cellules[x] = [];
+        const rangee = cellules[x];
 
-        for (let y = 0; y < this.size; y++)
+
+        for (let y = 0; y < this.taille; y++)
         {
-            const tuile = state[x][y];
-            row.push(tuile ? new Tile(tuile.position, tuile.value) : null);
+            const tuile = etat[x][y];
+            rangee.push(tuile ? new Tuile(tuile.position, tuile.value) : null);
         }
     }
 
-    return cells;
+    return cellules;
 };
 
-Grille.prototype.randomAvailableCell = function ()
+Grille.prototype.cellulesDispoAleat = function ()
 {
-    const cells = this.availableCells();
+    const cellules = this.cellulesDispo();
 
-    if (cells.length)
-        return cells[Math.floor(Math.random() * cells.length)];
+    if (cellules.length)
+        return cellules[Math.floor(Math.random() * cellules.length)];
 };
 
-Grille.prototype.availableCells = function ()
+Grille.prototype.cellulesDispo = function ()
 {
-    const cells = [];
+    const cellules = [];
 
-    this.eachCell(function (x, y, tuile) {
+    this.chaqueCellule(function (x, y, tuile) {
         if (!tuile)
-            cells.push({ x: x, y: y });
+            cellules.push({ x: x, y: y });
     });
-    return cells;
+    return cellules;
 };
 
-Grille.prototype.eachCell = function (callback)
+Grille.prototype.chaqueCellule = function (callback)
 {
-    for (let x = 0; x < this.size; x++)
+    for (let x = 0; x < this.taille; x++)
     {
-        for (let y = 0; y < this.size; y++)
+        for (let y = 0; y < this.taille; y++)
         {
-            callback(x, y, this.cells[x][y]);
+            callback(x, y, this.cellules[x][y]);
         }
     }
 };
 
-Grille.prototype.cellsAvailable = function ()
+Grille.prototype.cellulesDisponible = function ()
 {
-    return !!this.availableCells().length;
+    return !!this.cellulesDispo().length;
 };
 
-Grille.prototype.cellAvailable = function (cell) {
-    return !this.cellOccupied(cell);
+Grille.prototype.celluleDispo = function (cellule) {
+    return !this.cellulesOccupee(cellule);
 };
 
-Grille.prototype.cellOccupied = function (cell)
+Grille.prototype.cellulesOccupee = function (cellule)
 {
-    return !!this.cellContent(cell);
+    return !!this.contenuCellule(cellule);
 };
 
-Grille.prototype.cellContent = function (cell)
+Grille.prototype.contenuCellule = function (cellule)
 {
-    if (this.withinBounds(cell))
-        return this.cells[cell.x][cell.y];
+    if (this.limitation(cellule))
+        return this.cellules[cellule.x][cellule.y];
     else
         return null;
 };
 
-Grille.prototype.insertTile = function (tuile)
+Grille.prototype.insererTuile = function (tuile)
 {
-    this.cells[tuile.x][tuile.y] = tuile;
+    this.cellules[tuile.x][tuile.y] = tuile;
 };
 
-Grille.prototype.removeTile = function (tuile)
+Grille.prototype.effacerTuile = function (tuile)
 {
-    this.cells[tuile.x][tuile.y] = null;
+    this.cellules[tuile.x][tuile.y] = null;
 };
 
-Grille.prototype.withinBounds = function (position)
+Grille.prototype.limitation = function (position)
 {
-    return position.x >= 0 && position.x < this.size &&
-        position.y >= 0 && position.y < this.size;
+    return position.x >= 0 && position.x < this.taille &&
+        position.y >= 0 && position.y < this.taille;
 };
 
-Grille.prototype.serialize = function ()
+Grille.prototype.serialiser = function ()
 {
-    const cellState = [];
+    const etatCellule = [];
 
-    for (let x = 0; x < this.size; x++)
+    for (let x = 0; x < this.taille; x++)
     {
-        const row = cellState[x] = [];
+        etatCellule[x] = [];
+        const rangee = etatCellule[x];
 
-        for (let y = 0; y < this.size; y++)
+        for (let y = 0; y < this.taille; y++)
         {
-            row.push(this.cells[x][y] ? this.cells[x][y].serialize() : null);
+            rangee.push(this.cellules[x][y] ? this.cellules[x][y].serialiser() : null);
         }
     }
 
     return {
-        size: this.size,
-        cells: cellState
+        taille: this.taille,
+        cellules: etatCellule
     };
 };
 
-function Tile(position, value)
+function Tuile(position, value)
 {
     this.x                = position.x;
     this.y                = position.y;
     this.value            = value || 2;
 
-    this.previousPosition = null;
+    this.precedentePosition = null;
     this.fusionFrom       = null;
 }
 
-Tile.prototype.savePosition = function ()
+Tuile.prototype.sauvePosition = function ()
 {
-    this.previousPosition = { x: this.x, y: this.y };
+    this.precedentePosition = { x: this.x, y: this.y };
 };
 
-Tile.prototype.updatePosition = function (position)
+Tuile.prototype.majPosition = function (position)
 {
     this.x = position.x;
     this.y = position.y;
 };
 
 
-Tile.prototype.serialize = function ()
+Tuile.prototype.serialiser = function ()
 {
     return {
         position: {
@@ -476,154 +514,154 @@ Tile.prototype.serialize = function ()
     };
 };
 
-window.fakeStorage = {
+window.nonStock = {
     _data: {}
 };
 
-function LocalStorageManager() {
-    this.meilleurScoreKey     = "meilleurScore";
-    this.gameStateKey     = "gameState";
+function GestionStockageLocal() {
+    this.meilleurScoreCle     = "meilleurScore";
+    this.etatJeu     = "etatJeu";
 
-    const supported = this.localStorageSupported();
-    this.storage = supported ? window.localStorage : window.fakeStorage;
+    const supporter = this.stockageLocalSupporter();
+    this.stockage = supporter ? window.localStorage : window.nonStock;
 }
 
-LocalStorageManager.prototype.localStorageSupported = function () {
+GestionStockageLocal.prototype.stockageLocalSupporter = function () {
     const testKey = "test";
-    const storage = window.localStorage;
+    const stockage = window.localStorage;
 
     try {
-        storage.setItem(testKey, "1");
-        storage.removeItem(testKey);
+        stockage.setItem(testKey, "1");
+        stockage.removeItem(testKey);
         return true;
     } catch (error) {
         return false;
     }
 };
 
-LocalStorageManager.prototype.getBestScore = function () {
-    return this.storage.getItem(this.meilleurScoreKey) || 0;
+GestionStockageLocal.prototype.getMeilleurScore = function () {
+    return this.stockage.getItem(this.meilleurScoreCle) || 0;
 };
 
-LocalStorageManager.prototype.setBestScore = function (score) {
-    this.storage.setItem(this.meilleurScoreKey, score);
+GestionStockageLocal.prototype.setMeilleurScore = function (score) {
+    this.stockage.setItem(this.meilleurScoreCle, score);
 };
 
-LocalStorageManager.prototype.getGameState = function () {
-    const stateJSON = this.storage.getItem(this.gameStateKey);
-    return stateJSON ? JSON.parse(stateJSON) : null;
+GestionStockageLocal.prototype.getEtatJeu = function () {
+    const etatJSON = this.stockage.getItem(this.etatJeu);
+    return etatJSON ? JSON.parse(etatJSON) : null;
 };
 
-LocalStorageManager.prototype.setGameState = function (gameState) {
-    this.storage.setItem(this.gameStateKey, JSON.stringify(gameState));
+GestionStockageLocal.prototype.setEtatJeu = function (etatJeu) {
+    this.stockage.setItem(this.etatJeu, JSON.stringify(etatJeu));
 };
 
-LocalStorageManager.prototype.clearGameState = function () {
-    this.storage.removeItem(this.gameStateKey);
+GestionStockageLocal.prototype.effacerEtatJeu = function () {
+    this.stockage.removeItem(this.etatJeu);
 };
 
-function GameManager(size, InputManager, Actuator, StorageManager)
+function GestionJeu(taille, GestionEntree, Actionneur, GestionStockage)
 {
-    this.size           = size; // Size of the grid
-    this.inputManager   = new InputManager;
-    this.storageManager = new StorageManager;
-    this.actuator       = new Actuator;
+    this.taille           = taille; 
+    this.gestionEntree   = new GestionEntree;
+    this.gestionStockage = new GestionStockage;
+    this.actionneur       = new Actionneur;
 
-    this.startTiles     = 2;
+    this.tuilesDebut     = 2;
 
-    this.inputManager.on("move", this.move.bind(this));
-    this.inputManager.on("rejouer", this.rejouer.bind(this));
-    this.inputManager.on("continuer", this.continuer.bind(this));
+    this.gestionEntree.on("move", this.move.bind(this));
+    this.gestionEntree.on("rejouer", this.rejouer.bind(this));
+    this.gestionEntree.on("continuer", this.continuer.bind(this));
 
     this.setup();
 }
 
-GameManager.prototype.rejouer = function () {
-    this.storageManager.clearGameState();
-    this.actuator.continuerJeu();
+GestionJeu.prototype.rejouer = function () {
+    this.gestionStockage.effacerEtatJeu();
+    this.actionneur.continuerJeu();
     this.setup();
 };
 
-GameManager.prototype.continuer = function ()
+GestionJeu.prototype.continuer = function ()
 {
     this.continuer = true;
-    this.actuator.continuerJeu();
+    this.actionneur.continuerJeu();
 };
 
-GameManager.prototype.isGameTerminated = function ()
+GestionJeu.prototype.jeuFini = function ()
 {
     return this.perdu || (this.gagner && !this.continuer);
 };
 
-GameManager.prototype.setup = function ()
+GestionJeu.prototype.setup = function ()
 {
-    const previousState = this.storageManager.getGameState();
+    const precedent = this.gestionStockage.getEtatJeu();
 
-    if (previousState)
+    if (precedent)
     {
-        this.grid        = new Grille(previousState.grid.size, previousState.grid.cells);
-        this.score       = previousState.score;
-        this.perdu        = previousState.perdu;
-        this.gagner         = previousState.gagner;
-        this.continuer = previousState.continuer;
+        this.grille         = new Grille(precedent.grille.taille, precedent.grille.cellules);
+        this.score          = precedent.score;
+        this.perdu          = precedent.perdu;
+        this.gagner         = precedent.gagner;
+        this.continuer      = precedent.continuer;
     }
     else
     {
-        this.grid        = new Grille(this.size);
-        this.score       = 0;
-        this.perdu        = false;
-        this.gagner         = false;
-        this.continuer = false;
+        this.grille        = new Grille(this.taille);
+        this.score         = 0;
+        this.perdu         = false;
+        this.gagner        = false;
+        this.continuer     = false;
 
-        this.addStartTiles();
+        this.ajoutTuilesDebut();
     }
 
-    this.actuate();
+    this.actionner();
 };
 
-GameManager.prototype.addStartTiles = function ()
+GestionJeu.prototype.ajoutTuilesDebut = function ()
 {
-    for (let i = 0; i < this.startTiles; i++)
+    for (let i = 0; i < this.tuilesDebut; i++)
     {
-        this.addRandomTile();
+        this.ajoutTuileAleat();
     }
 };
 
-GameManager.prototype.addRandomTile = function ()
+GestionJeu.prototype.ajoutTuileAleat = function ()
 {
-    if (this.grid.cellsAvailable())
+    if (this.grille.cellulesDisponible())
     {
         const value = Math.random() < 0.9 ? 2 : 4;
-        const tuile = new Tile(this.grid.randomAvailableCell(), value);
+        const tuile = new Tuile(this.grille.cellulesDispoAleat(), value);
 
-        this.grid.insertTile(tuile);
+        this.grille.insererTuile(tuile);
     }
 };
 
-GameManager.prototype.actuate = function ()
+GestionJeu.prototype.actionner = function ()
 {
-    if (this.storageManager.getBestScore() < this.score)
-        this.storageManager.setBestScore(this.score);
+    if (this.gestionStockage.getMeilleurScore() < this.score)
+        this.gestionStockage.setMeilleurScore(this.score);
 
     if (this.perdu)
-        this.storageManager.clearGameState();
+        this.gestionStockage.effacerEtatJeu();
     else
-        this.storageManager.setGameState(this.serialize());
+        this.gestionStockage.setEtatJeu(this.serialiser());
 
-    this.actuator.actuate(this.grid,
+    this.actionneur.actionner(this.grille,
         {
             score:      this.score,
             perdu:       this.perdu,
             gagner:        this.gagner,
-            meilleurScore:  this.storageManager.getBestScore(),
-            terminer: this.isGameTerminated()
+            meilleurScore:  this.gestionStockage.getMeilleurScore(),
+            terminer: this.jeuFini()
         });
 };
 
-GameManager.prototype.serialize = function ()
+GestionJeu.prototype.serialiser = function ()
 {
     return {
-        grid:        this.grid.serialize(),
+        grille:        this.grille.serialiser(),
         score:       this.score,
         perdu:        this.perdu,
         gagner:         this.gagner,
@@ -631,168 +669,167 @@ GameManager.prototype.serialize = function ()
     };
 };
 
-GameManager.prototype.prepareTiles = function ()
+GestionJeu.prototype.prepareTuiles = function ()
 {
-    this.grid.eachCell(function (x, y, tuile)
+    this.grille.chaqueCellule(function (x, y, tuile)
     {
         if (tuile)
         {
             tuile.fusionFrom = null;
-            tuile.savePosition();
+            tuile.sauvePosition();
         }
     });
 };
 
-GameManager.prototype.moveTile = function (tuile, cell)
+GestionJeu.prototype.deplacerTuile = function (tuile, cellule)
 {
-    this.grid.cells[tuile.x][tuile.y] = null;
-    this.grid.cells[cell.x][cell.y] = tuile;
-    tuile.updatePosition(cell);
+    this.grille.cellules[tuile.x][tuile.y] = null;
+    this.grille.cellules[cellule.x][cellule.y] = tuile;
+    tuile.majPosition(cellule);
 };
 
-GameManager.prototype.move = function (direction)
+GestionJeu.prototype.move = function (direction)
 {
     const self = this;
 
-    if (this.isGameTerminated())
+    if (this.jeuFini())
         return;
 
-    let cell, tuile;
+    let cellule, tuile;
 
-    const vector = this.getVector(direction);
-    const traversals = this.buildTraversals(vector);
-    let moved = false;
+    const vecteur = this.getVecteur(direction);
+    const traversees = this.construireTraversees(vecteur);
+    let deplacement = false;
 
-    this.prepareTiles();
+    this.prepareTuiles();
 
-    traversals.x.forEach(function (x)
+    traversees.x.forEach(function (x)
     {
-        traversals.y.forEach(function (y)
+        traversees.y.forEach(function (y)
         {
-            cell = { x: x, y: y };
-            tuile = self.grid.cellContent(cell);
+            cellule = { x: x, y: y };
+            tuile = self.grille.contenuCellule(cellule);
 
             if (tuile)
             {
-                const positions = self.findFarthestPosition(cell, vector);
-                const next = self.grid.cellContent(positions.next);
+                const positions = self.trouverPositionEloigne(cellule, vecteur);
+                const suivant = self.grille.contenuCellule(positions.suivant);
 
-                if (next && next.value === tuile.value && !next.fusionFrom)
+                if (suivant && suivant.value === tuile.value && !suivant.fusionFrom)
                 {
-                    const fusion = new Tile(positions.next, tuile.value * 2);
-                    fusion.fusionFrom = [tuile, next];
+                    const fusion = new Tuile(positions.suivant, tuile.value * 2);
+                    fusion.fusionFrom = [tuile, suivant];
 
-                    self.grid.insertTile(fusion);
-                    self.grid.removeTile(tuile);
-                    tuile.updatePosition(positions.next);
+                    self.grille.insererTuile(fusion);
+                    self.grille.effacerTuile(tuile);
+                    tuile.majPosition(positions.suivant);
                     self.score += fusion.value;
 
                     if (fusion.value === 2048) self.gagner = true;
                 }
                 else
-                    self.moveTile(tuile, positions.farthest);
+                    self.deplacerTuile(tuile, positions.eloigne);
 
-                if (!self.positionsEqual(cell, tuile))
-                    moved = true;
+                if (!self.positionsEgales(cellule, tuile))
+                    deplacement = true;
 
             }
         });
     });
 
-    if (moved)
+    if (deplacement)
     {
-        this.addRandomTile();
+        this.ajoutTuileAleat();
 
-        if (!this.movesAvailable())
+        if (!this.deplacementDispo())
             this.perdu = true;
 
-        this.actuate();
+        this.actionner();
     }
 };
 
-GameManager.prototype.getVector = function (direction)
+GestionJeu.prototype.getVecteur = function (direction)
 {
     const map =
         {
-            0: {x: 0, y: -1}, // haut
-            1: {x: 1, y: 0},  // droite
-            2: {x: 0, y: 1},  // bas
-            3: {x: -1, y: 0}   // gauche
+            0: {x: 0, y: -1},
+            1: {x: 1, y: 0},
+            2: {x: 0, y: 1},
+            3: {x: -1, y: 0}
         };
 
     return map[direction];
 };
 
-GameManager.prototype.buildTraversals = function (vector)
+GestionJeu.prototype.construireTraversees = function (vecteur)
 {
-    const traversals = {x: [], y: []};
+    const traversees = {x: [], y: []};
 
-    for (let pos = 0; pos < this.size; pos++)
+    for (let pos = 0; pos < this.taille; pos++)
     {
-        traversals.x.push(pos);
-        traversals.y.push(pos);
+        traversees.x.push(pos);
+        traversees.y.push(pos);
     }
 
-    if (vector.x === 1) traversals.x = traversals.x.reverse();
-    if (vector.y === 1) traversals.y = traversals.y.reverse();
+    if (vecteur.x === 1) traversees.x = traversees.x.reverse();
+    if (vecteur.y === 1) traversees.y = traversees.y.reverse();
 
-    return traversals;
+    return traversees;
 };
 
 
-GameManager.prototype.findFarthestPosition = function (cell, vector)
+GestionJeu.prototype.trouverPositionEloigne = function (cellule, vecteur)
 {
-    let previous;
+    let preced;
 
     do {
-        previous = cell;
-        cell     = { x: previous.x + vector.x, y: previous.y + vector.y };
-    } while (this.grid.withinBounds(cell) &&
-    this.grid.cellAvailable(cell));
+        preced = cellule;
+        cellule     = { x: preced.x + vecteur.x, y: preced.y + vecteur.y };
+    } while (this.grille.limitation(cellule) &&
+    this.grille.celluleDispo(cellule));
 
     return {
-        farthest: previous,
-        next: cell
+        eloigne: preced,
+        suivant: cellule
     };
 };
 
-GameManager.prototype.movesAvailable = function ()
+GestionJeu.prototype.deplacementDispo = function ()
 {
-    return this.grid.cellsAvailable() || this.tuileMatchesAvailable();
+    return this.grille.cellulesDisponible() || this.tuileAssortieDispo();
 };
 
-GameManager.prototype.tuileMatchesAvailable = function ()
+GestionJeu.prototype.tuileAssortieDispo = function ()
 {
     const self = this;
 
     let tuile;
 
-    for (let x = 0; x < this.size; x++)
+    for (let x = 0; x < this.taille; x++)
     {
-        for (let y = 0; y < this.size; y++)
+        for (let y = 0; y < this.taille; y++)
         {
-            tuile = this.grid.cellContent({ x: x, y: y });
+            tuile = this.grille.contenuCellule({ x: x, y: y });
 
             if (tuile)
             {
                 for (let direction = 0; direction < 4; direction++)
                 {
-                    const vector = self.getVector(direction);
-                    const cell = {x: x + vector.x, y: y + vector.y};
+                    const vecteur = self.getVecteur(direction);
+                    const cellule = {x: x + vecteur.x, y: y + vecteur.y};
 
-                    const other = self.grid.cellContent(cell);
+                    const autre = self.grille.contenuCellule(cellule);
 
-                    if (other && other.value === tuile.value)
+                    if (autre && autre.value === tuile.value)
                         return true;
                 }
             }
         }
     }
-
     return false;
 };
 
-GameManager.prototype.positionsEqual = function (first, second)
+GestionJeu.prototype.positionsEgales = function (premier, deuxieme)
 {
-    return first.x === second.x && first.y === second.y;
+    return premier.x === deuxieme.x && premier.y === deuxieme.y;
 };

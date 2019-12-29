@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-    margin: 80px 0;
+    margin: 20px 0;
 }
 
 .ensembles-titre:after {
@@ -86,7 +86,7 @@ h1.titre {
 }
 
 .meilleur-score:after {
-    content: "Best";
+    content: "Meilleur";
 }
 
 p {
@@ -113,13 +113,6 @@ strong.important {
     font-size: 18px;
 }
 
-hr {
-    border: none;
-    border-bottom: 1px solid #d8d4d0;
-    margin-top: 20px;
-    margin-bottom: 30px;
-}
-
 .container {
     width: 500px;
     margin: 0 auto;
@@ -141,15 +134,15 @@ hr {
     padding: 15px;
     cursor: default;
     touch-action: none;
-    background: rgba(0, 0, 33, 0.76);
+    background: #faf8ef;
     border-radius: 6px;
     width: 500px;
-    height: 500px;
+    height: 150px;
     box-sizing: border-box;
 }
 
 .ensemble-jeu .message-jeu {
-    display: none;
+    display: block;
     position: absolute;
     top: 0;
     right: 0;
@@ -158,11 +151,11 @@ hr {
     background: rgba(238, 228, 218, 0.5);
     z-index: 100;
     text-align: center;
-    animation: fade-in 800ms ease 1200ms;
     animation-fill-mode: both;
 }
 
 .ensemble-jeu .message-jeu p {
+    display: none;
     font-size: 60px;
     font-weight: bold;
     height: 60px;
@@ -188,19 +181,21 @@ hr {
 }
 
 .ensemble-jeu .message-jeu a.continuer {
-    display: none;
+    display: inline-block;
+    position: absolute;
+    left: 50px;
 }
 
-.ensemble-jeu .message-jeu.game-won {
+.ensemble-jeu .message-jeu.partie-gagner {
     background: rgba(237, 194, 46, 0.5);
     color: #f9f6f2;
 }
 
-.ensemble-jeu .message-jeu.game-won a.continuer {
+.ensemble-jeu .message-jeu.partie-gagner a.continuer {
     display: inline-block;
 }
 
-.ensemble-jeu .message-jeu.game-won, .ensemble-jeu .message-jeu.game-over {
+.ensemble-jeu .message-jeu.partie-gagner, .ensemble-jeu .message-jeu.partie-perdu {
     display: block;
 }
 
@@ -237,6 +232,7 @@ hr {
 }
 
 .ensemble-tuiles {
+    display: none;
     position: absolute;
     z-index: 2;
 }
@@ -449,7 +445,7 @@ hr {
     }
 }
 
-.tuile-new .tuile-inter {
+.tuile-nouveau .tuile-inter {
     animation: appear 200ms ease 100ms;
     animation-fill-mode: backwards;
 }
@@ -497,11 +493,24 @@ hr {
     display: block;
     text-align: center;
     float: right;
+    position: absolute;
+    top: 299px;
+    left: 52%;
+    z-index: 9999;
 }
 
-.game-explanation {
+.explication-jeu {
     margin-top: 50px;
 }
+
+.ensemble-grille {
+    display: none;
+}
+
+.reessayer {
+    display: none !important;
+}
+
 
 @media screen and (max-width: 520px) {
     html, body {
@@ -526,7 +535,11 @@ hr {
     .score-actuelle, .meilleur-score {
         margin-top: 0;
         padding: 15px 10px;
-        min-width: 40px;
+        min-width: 60px;
+    }
+
+    .meilleur-score {
+        min-width: 80px;
     }
 
     .ensembles-titre {
@@ -542,6 +555,7 @@ hr {
 
     .nouvelle-partie {
         width: 42%;
+        top: initial;
         padding: 0;
         display: block;
         box-sizing: border-box;
@@ -554,7 +568,7 @@ hr {
         padding: 10px;
         cursor: default;
         touch-action: none;
-        background: #bbada0;
+        background: rgba(0, 0, 33, 0.76);
         border-radius: 6px;
         width: 280px;
         height: 280px;
@@ -591,20 +605,21 @@ hr {
         display: none;
     }
 
-    .ensemble-jeu .message-jeu.game-won {
+    .ensemble-jeu .message-jeu.partie-gagner {
         background: rgba(237, 194, 46, 0.5);
         color: #f9f6f2;
     }
 
-    .ensemble-jeu .message-jeu.game-won a.continuer {
+    .ensemble-jeu .message-jeu.partie-gagner a.continuer {
         display: inline-block;
     }
 
-    .ensemble-jeu .message-jeu.game-won, .ensemble-jeu .message-jeu.game-over {
+    .ensemble-jeu .message-jeu.partie-gagner, .ensemble-jeu .message-jeu.partie-perdu {
         display: block;
     }
 
     .ensemble-grille {
+        display: block;
         position: absolute;
         z-index: 1;
     }
@@ -629,7 +644,7 @@ hr {
         margin-right: 10px;
         float: left;
         border-radius: 3px;
-        background: rgba(238, 228, 218, 0.35);
+        background: #a6c5ff;
     }
 
     .cellule-grille:last-child {
@@ -637,6 +652,7 @@ hr {
     }
 
     .ensemble-tuiles {
+        display: block;
         position: absolute;
         z-index: 2;
     }
