@@ -196,7 +196,8 @@ HTMLActionneur.prototype.actionner = function (grille, metadata)
         }
 
         if (metadata.score === 0) {
-            $('.continuer2').css('display', 'none')
+            $('.continuer2').css('display', 'none');
+            $('.nouvelle-partie2').removeClass('offset-md-4')
         }
 
     });
@@ -807,7 +808,9 @@ GestionJeu.prototype.positionsEgales = function (premier, deuxieme)
 
 const height = $('.ensemble-jeu').css('width');
 
-$('.continuer2, .nouvelle-partie2').click(function () {
+
+
+$('.nouvelle-partie2, .continuer2').on('click touchstart', function () {
     $('.debut_jeu').css('display', 'none');
     $('.ensemble-jeu').css({
         background: 'rgba(0, 0, 33, 0.76)',
@@ -818,3 +821,4 @@ $('.continuer2, .nouvelle-partie2').click(function () {
     $('.avant-jeu .nouvelle-partie').css('display', 'block');
     $('.explication-jeu').css('display', 'none')
 });
+

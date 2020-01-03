@@ -502,6 +502,7 @@ strong.important {
     height: 40px;
     line-height: 42px;
     text-align: center;
+    width: 500px;
 }
 
 .continuer2 {
@@ -517,6 +518,11 @@ strong.important {
 
 .explication-jeu {
     margin-top: 50px;
+}
+
+.debut_jeu {
+    display: flex;
+    justify-content: center;
 }
 
 @media screen and (max-width: 520px) {
@@ -567,6 +573,14 @@ strong.important {
         box-sizing: border-box;
         margin-top: 2px;
         font-size: 14px;
+    }
+
+    .nouvelle-partie2 {
+        width: 200px;
+    }
+
+    .continuer2 {
+        width: 200px;
     }
 
     .ensemble-jeu {
