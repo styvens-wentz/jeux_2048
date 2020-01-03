@@ -134,10 +134,10 @@ strong.important {
     padding: 15px;
     cursor: default;
     touch-action: none;
-    background: rgba(0, 0, 33, 0.76);
+    background: #faf8ef;
     border-radius: 6px;
     width: 500px;
-    height: 500px;
+    height: 100px;
     box-sizing: border-box;
 }
 
@@ -198,6 +198,7 @@ strong.important {
 }
 
 .ensemble-grille {
+    display: none;
     position: absolute;
     z-index: 1;
 }
@@ -230,6 +231,7 @@ strong.important {
 }
 
 .ensemble-tuiles {
+    display: none;
     position: absolute;
     z-index: 2;
 }
@@ -479,7 +481,7 @@ strong.important {
     margin-bottom: 0;
 }
 
-.nouvelle-partie {
+.avant-jeu .nouvelle-partie {
     background: #8f7a66;
     border-radius: 3px;
     padding: 0 20px;
@@ -487,9 +489,30 @@ strong.important {
     color: #f9f6f2;
     height: 40px;
     line-height: 42px;
-    display: block;
+    display: none;
     text-align: center;
     float: right;
+}
+
+.nouvelle-partie2 {
+    background: #8f7a66;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #f9f6f2;
+    height: 40px;
+    line-height: 42px;
+    text-align: center;
+}
+
+.continuer2 {
+    background: #8f7a66;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #f9f6f2;
+    height: 40px;
+    line-height: 42px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .explication-jeu {
@@ -537,13 +560,13 @@ strong.important {
         line-height: 1.65;
     }
 
-    .nouvelle-partie {
-        width: 42%;
+    .avant-jeu .nouvelle-partie {
+        width: 45%;
         top: initial;
         padding: 0;
-        display: block;
         box-sizing: border-box;
         margin-top: 2px;
+        font-size: 14px;
     }
 
     .ensemble-jeu {
@@ -552,10 +575,9 @@ strong.important {
         padding: 10px;
         cursor: default;
         touch-action: none;
-        background: rgba(0, 0, 33, 0.76);
         border-radius: 6px;
         width: 280px;
-        height: 280px;
+        height: 70px;
         box-sizing: border-box;
     }
 
@@ -603,7 +625,6 @@ strong.important {
     }
 
     .ensemble-grille {
-        display: block;
         position: absolute;
         z-index: 1;
     }
@@ -636,7 +657,6 @@ strong.important {
     }
 
     .ensemble-tuiles {
-        display: block;
         position: absolute;
         z-index: 2;
     }

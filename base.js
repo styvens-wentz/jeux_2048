@@ -73,6 +73,7 @@ GestionToucheClavier.prototype.listen = function ()
 
     this.bindButtonPress(".reessayer", this.rejouer);
     this.bindButtonPress(".nouvelle-partie", this.rejouer);
+    this.bindButtonPress(".nouvelle-partie2", this.rejouer);
     this.bindButtonPress(".continuer", this.continuer);
 
     let touchStartClientX, touchStartClientY;
@@ -192,6 +193,10 @@ HTMLActionneur.prototype.actionner = function (grille, metadata)
                 self.message(false);
             else if (metadata.gagner)
                 self.message(true);
+        }
+
+        if (metadata.score === 0) {
+            $('.continuer2').css('display', 'none')
         }
 
     });
@@ -799,3 +804,17 @@ GestionJeu.prototype.positionsEgales = function (premier, deuxieme)
 {
     return premier.x === deuxieme.x && premier.y === deuxieme.y;
 };
+
+const height = $('.ensemble-jeu').css('width');
+
+$('.continuer2, .nouvelle-partie2').click(function () {
+    $('.debut_jeu').css('display', 'none');
+    $('.ensemble-jeu').css({
+        background: 'rgba(0, 0, 33, 0.76)',
+        height: height
+    });
+    $('.ensemble-grille').css('display', 'initial');
+    $('.ensemble-tuiles').css('display', 'initial');
+    $('.avant-jeu .nouvelle-partie').css('display', 'block');
+    $('.explication-jeu').css('display', 'none')
+});
