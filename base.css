@@ -134,15 +134,15 @@ strong.important {
     padding: 15px;
     cursor: default;
     touch-action: none;
-    background: #faf8ef;
+    background: rgba(0, 0, 33, 0.76);
     border-radius: 6px;
     width: 500px;
-    height: 150px;
+    height: 500px;
     box-sizing: border-box;
 }
 
 .ensemble-jeu .message-jeu {
-    display: block;
+    display: none;
     position: absolute;
     top: 0;
     right: 0;
@@ -151,11 +151,11 @@ strong.important {
     background: rgba(238, 228, 218, 0.5);
     z-index: 100;
     text-align: center;
+    animation: fade-in 800ms ease 1200ms;
     animation-fill-mode: both;
 }
 
 .ensemble-jeu .message-jeu p {
-    display: none;
     font-size: 60px;
     font-weight: bold;
     height: 60px;
@@ -181,9 +181,7 @@ strong.important {
 }
 
 .ensemble-jeu .message-jeu a.continuer {
-    display: inline-block;
-    position: absolute;
-    left: 50px;
+    display: none;
 }
 
 .ensemble-jeu .message-jeu.partie-gagner {
@@ -232,7 +230,6 @@ strong.important {
 }
 
 .ensemble-tuiles {
-    display: none;
     position: absolute;
     z-index: 2;
 }
@@ -429,7 +426,7 @@ strong.important {
     }
 }
 
-@keyframes appear {
+@keyframes apparaitre {
     0% {
         opacity: 0;
         -webkit-transform: scale(0);
@@ -446,7 +443,7 @@ strong.important {
 }
 
 .tuile-nouveau .tuile-inter {
-    animation: appear 200ms ease 100ms;
+    animation: apparaitre 200ms ease 100ms;
     animation-fill-mode: backwards;
 }
 
@@ -493,24 +490,11 @@ strong.important {
     display: block;
     text-align: center;
     float: right;
-    position: absolute;
-    top: 299px;
-    left: 52%;
-    z-index: 9999;
 }
 
 .explication-jeu {
     margin-top: 50px;
 }
-
-.ensemble-grille {
-    display: none;
-}
-
-.reessayer {
-    display: none !important;
-}
-
 
 @media screen and (max-width: 520px) {
     html, body {

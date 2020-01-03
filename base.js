@@ -1,37 +1,3 @@
-$('.continuer, .nouvelle-partie').click(function () {
-    const ensemble_jeu = $('.ensemble-jeu');
-    const height = ensemble_jeu.css('width');
-
-    ensemble_jeu.css({
-        height: height,
-        background: 'rgba(0, 0, 33, 0.76)'
-    });
-    $('.reessayer').css('display', 'initial');
-    $('.message-jeu p').css('display', 'initial');
-    $('.continuer').css({
-        display: 'none',
-        position: 'initial',
-        left: 'initial'
-    });
-    $('.nouvelle-partie').css({
-        position: 'initial',
-        top: 'initial',
-        left: 'initial',
-    });
-    $('.ensemble-grille').css('display', 'initial');
-    $('.ensemble-tuiles').css('display', 'initial');
-    $('.ensemble-jeu .message-jeu').css({
-        animation: 'fade-in 400ms ease 800ms',
-        display: 'none'
-    });
-    $('.explication-jeu').css('display', 'none');
-});
-
-
-
-
-
-
 function GestionToucheClavier()
 {
     this.events = {};
