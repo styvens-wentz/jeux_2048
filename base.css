@@ -503,6 +503,9 @@ strong.important {
     line-height: 42px;
     text-align: center;
     width: 500px;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .continuer2 {
@@ -514,16 +517,15 @@ strong.important {
     line-height: 42px;
     text-align: center;
     margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .explication-jeu {
     margin-top: 50px;
 }
 
-.debut_jeu {
-    display: flex;
-    justify-content: center;
-}
+
 
 @media screen and (max-width: 520px) {
     html, body {
