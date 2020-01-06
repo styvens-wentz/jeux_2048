@@ -808,8 +808,6 @@ GestionJeu.prototype.positionsEgales = function (premier, deuxieme)
 
 const height = $('.ensemble-jeu').css('width');
 
-
-
 $('.nouvelle-partie2, .continuer2').on('click touchstart', function () {
     $('.debut_jeu').css('display', 'none');
     $('.ensemble-jeu').css({
@@ -821,4 +819,3 @@ $('.nouvelle-partie2, .continuer2').on('click touchstart', function () {
     $('.avant-jeu .nouvelle-partie').css('display', 'block');
     $('.explication-jeu').css('display', 'none')
 });
-
